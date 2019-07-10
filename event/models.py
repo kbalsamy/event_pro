@@ -1,9 +1,13 @@
 from django.db import models
 from django.urls import reverse
 
+
+def allocate_file_name(instance, filename):
+
+    return "{}_{}".format(instance.name, filename)
+
+
 # Create your models here.
-
-
 class Catagory(models.Model):
 
     " this table clasifies the event types"
@@ -16,9 +20,21 @@ class Catagory(models.Model):
         return self.name
 
 
+class Layout(models.Model):
+
+    name = models.CharField(max_length=50, blank=True)
+    layout_map = models.FileField(upload_to=allocate_file_name, blank=True)
+    layout_price_plan = models.FileField(upload_to=allocate_file_name, blank=True)
+    allocated = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+
+        return self.name
+
+
 class Event(models.Model):
 
-    "This table provides all info about the event "
+    "This table provides all info about the event, one layout for Many Events"
 
     name = models.CharField(max_length=50)
     slug = models.CharField(max_length=50)
@@ -37,14 +53,3 @@ class Event(models.Model):
     def get_absoulte_url(self):
 
         pass
-
-
-class Layout(models.Model):
-
-    plan = models.TextField(blank=True)
-    allocated = models.PositiveIntegerField(default=1)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=1000)
-
-    def __str__(self):
-
-        return str(self.id)

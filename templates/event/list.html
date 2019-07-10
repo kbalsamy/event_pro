@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Event List </title>
+</head>
+<body>
+
+	{% for event in object_list %}
+	<h1> <a href="{% url 'event:event_detail' event.id event.slug %}"> {{ event.name }} </a></h1>
+
+	<h3> {{ event.conducted_on }} in {{ event.location }}</h3>
+
+	<p>{{ event.description }}</p>
+
+
+	{% endfor %}
+
+</body>
+</html>
