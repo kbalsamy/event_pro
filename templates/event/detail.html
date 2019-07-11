@@ -1,20 +1,131 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Event Detail page </title>
-</head>
-<body>
-
-	<h1> {{ object.name }}</h1>
-
-	<h3> {{ object.conducted_on }} in {{ object.location }}</h3>
-
-	<p>{{ object.description }}</p>
-
-	<button>Book Now</button>
 
 
-	<span>{{ object.layout.layout_map }}</span>
+{% extends 'base.html' %}
+{% load layout_map_tags %}
 
-</body>
-</html>
+
+
+{% block style %}
+
+.show-layout{
+    display: none;
+}
+
+.selected{
+
+    fill:green;
+}
+
+
+{% endblock %}
+
+{% block main %}
+
+<div class="container-fluid" style="background: grey">
+
+<h1> {{ object.name }}</h1>
+
+<h3> {{ object.conducted_on }} in {{ object.location }}</h3>
+
+<p>{{ object.description }}</p>
+
+<button class="booking">Book Now</button>
+
+</div>
+
+<div class="container show-layout">
+    <div class="row">
+        <div class="col-md-6">
+            {{ object.layout.layout_map.read | svg }}
+
+        </div>
+        <div class="col-md-6 summary">
+            <h1>summary</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"> Seat selected </th>
+                        <th scope="col"> price </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="status"></td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <button class="btn btn-primary" style="align-content: right">Continue</button>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+{% block js %}
+
+$( document ).ready(function() {
+
+    $(".booking").click(function(){
+
+        $(".show-layout").show();
+     });
+
+     var selected_hall = [];
+
+     $(".hall").on('click', function(){
+
+        if($(this).hasClass('selected')){
+
+            $(this).removeClass('selected');
+            var index = selected_hall.indexOf($(this).attr('id'));
+
+            if (index !== -1) selected_hall.splice(index, 1);
+            $(".status").text(selected_hall)
+    }
+    else{
+
+        $(this).addClass('selected');
+        var hall_id = $(this).attr('id')
+        var available = selected_hall.includes(hall_id)
+
+        if (!available){
+            selected_hall.push(hall_id);
+    }
+        $(".status").text(selected_hall)
+
+
+    }
+
+ });
+
+ $(".hall").mouseenter(function(){
+
+    $(this).tooltip();
+
+
+});
+
+
+
+});
+
+add_html(arr, element){
+
+        for(var i=0;i< arr.length;i++){
+
+                $(element).html(arr[i])
+    }
+
+};
+
+
+
+{% endblock %}

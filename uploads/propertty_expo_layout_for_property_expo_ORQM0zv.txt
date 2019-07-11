@@ -1,0 +1,11 @@
+<svg width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer">
+
+  <rect fill="#FF0000" height="1" id="svg_6" stroke="#000000" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="5" width="0" x="512.5" y="235.5"/>
+
+  <ellipse class ="hall data-toggle="tooltip" data-html="true" title="<h3>ID: svg_1</h3><h4>Type:small</h4><h5>Price:$1000</h5>" cx="160.5" cy="240.5" fill="#f2b1d7" id="svg_1" rx="97" ry="83" stroke="#000000" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="5"/>
+
+  <ellipse class ="hall data-toggle="tooltip" data-html="true" title="<h3>ID: svg_3</h3><h4>Type:small</h4><h5>Price:$1000</h5>" cx="415.5" cy="235.5" fill="#f2b1d7" id="svg_3" rx="97" ry="83" stroke="#000000" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="5"/>
+ </g>
+</svg>
