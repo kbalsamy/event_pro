@@ -48,10 +48,9 @@
                         <th scope="col"> price </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td class="status"></td>
-                    </tr>
+                <tbody class ="status">
+
+
                 </tbody>
 
             </table>
@@ -78,6 +77,7 @@ $( document ).ready(function() {
      });
 
      var selected_hall = [];
+     var selected = $(".status")
 
      $(".hall").on('click', function(){
 
@@ -85,9 +85,18 @@ $( document ).ready(function() {
 
             $(this).removeClass('selected');
             var index = selected_hall.indexOf($(this).attr('id'));
-
             if (index !== -1) selected_hall.splice(index, 1);
-            $(".status").text(selected_hall)
+            var id = $(this).attr('id')
+
+            $("table td").filter(function(){
+            if ($(this).text() == id){
+                $(this).parents("tr").remove()
+        }
+
+        });
+
+
+
     }
     else{
 
@@ -97,8 +106,10 @@ $( document ).ready(function() {
 
         if (!available){
             selected_hall.push(hall_id);
+
     }
-        <!-- $(".status").text(selected_hall) -->
+        get_price(hall_id, selected)
+
 
 
     }
@@ -107,7 +118,7 @@ $( document ).ready(function() {
 
  $(".hall").mouseenter(function(){
 
-    $(this).tooltip();
+    $(this).tooltip("show");
 
 
 });
@@ -115,13 +126,36 @@ $( document ).ready(function() {
 
 
 });
+
+
+function get_price(id, element){
+
+     $.ajax({
+        url:'ajax/get_price/',
+        data: {'hall_id': id, 'event':'{{ object.name }}' },
+        datatype: 'json',
+        success : function(data){
+
+            element.append("<tr><td>" + data['hall_id'] + "</td><td>" + data['price'] +"</td></tr>")
+    }
+
+    });
+
+};
+
 
 function add_html(arr, element){
 
+        element.empty();
+        var add_html = "";
         for(var i=0;i< arr.length;i++){
 
-                $(element).html(arr[i])
+            add_html += "<tr><td>" + arr[i] + "</td>"
+
+            get_price(arr[i], element)
     }
+    element.append(add_html);
+
 
 };
 

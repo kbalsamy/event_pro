@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Event, Catagory, Layout
+from .models import Event, Catagory, Layout, Hall
 
 # Register your models here.
 
@@ -19,3 +19,4 @@ class CatagoryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Layout)
+admin.site.register(Hall)

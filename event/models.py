@@ -53,3 +53,17 @@ class Event(models.Model):
     def get_absoulte_url(self):
 
         pass
+
+
+class Hall(models.Model):
+
+    types = [('small', 'SMALL'), ('large', 'LARGE')]
+
+    hall_id = models.CharField(max_length=5)
+    hall_type = models.CharField(max_length=10, choices=types)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
+
+    def __str__(self):
+
+        return self.hall_id
