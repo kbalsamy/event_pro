@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Event, Hall
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from .cart import Cart
+from orders.forms import OrderCreateForm
 
 # Create your views here.
 
@@ -29,3 +32,14 @@ def get_price(request):
         'price': str(hall.price)
     }
     return JsonResponse(data)
+
+
+@require_POST
+def checkout_view(request, event):
+
+    cart = Cart(request)
+    data = request.POST.get('hall_id')
+    hall_ids = list(data.split(','))
+    cart.add(hall_ids, event)
+    form = OrderCreateForm()
+    return render(request, 'event/checkout.html', {'cart': cart, 'form': form})

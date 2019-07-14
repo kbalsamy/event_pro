@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'event.apps.EventConfig',
+    'orders.apps.OrdersConfig',
+    'payments.apps.PaymentsConfig',
 ]
 
 MIDDLEWARE = [
@@ -63,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'event.context_processors.cart',
             ],
         },
     },
@@ -122,3 +125,24 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
+
+CART_SESSION_ID = 'cart'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+
+# Braintree sandbox settings
+
+BRAINTREE_MERCHANT_ID = os.environ.get('merchant_id')
+BRAINTREE_PUBLIC_KEY = os.environ.get('public_key')
+BRAINTREE_PRIVATE_KEY = os.environ.get('private_key')
+
+from braintree import Configuration, Environment
+
+
+Configuration.configure(
+    Environment.Sandbox,
+    BRAINTREE_MERCHANT_ID,
+    BRAINTREE_PUBLIC_KEY,
+    BRAINTREE_PRIVATE_KEY
+    )

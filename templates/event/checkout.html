@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+
+<h1>Provide your details to complete the order </h1>
+
+<div class="container-fluid">
+	<div class="row">
+		
+		<div class="col-md-6">
+			<form action="{% url 'orders:order_create' %}" method="POST">				
+				{{ form.as_p }}
+				{% csrf_token %}
+				<input type="submit" value="Place order">
+			</form>			
+		</div>
+
+		<div class="col-md-6">
+			
+			<ul>
+				{% for item in cart %}
+				<li> {{ item.event }} - {{ item.hall_id }}- {{ item.price }}</li>
+
+				{% endfor %}
+			</ul>
+
+		</div>
+
+	</div>
+
+</div>
+
+
+
+
+
+{% endblock %}

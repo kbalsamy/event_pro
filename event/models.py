@@ -63,6 +63,7 @@ class Hall(models.Model):
     hall_type = models.CharField(max_length=10, choices=types)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
+    available = models.BooleanField(default=True)
 
     def __str__(self):
 

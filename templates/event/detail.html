@@ -35,27 +35,38 @@
 
 <div class="container show-layout">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8 col-sm-12">
             {{ object.layout.layout_map.read | svg }}
 
         </div>
-        <div class="col-md-6 summary">
+        <div class="col-md-4 col-sm-12 summary">
             <h1>summary</h1>
+            
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col"> Seat selected </th>
+                        <th scope="col"> Hall selected </th>
                         <th scope="col"> price </th>
                     </tr>
                 </thead>
-                <tbody class ="status">
-
+                <tbody class ="status" id="status-updated">
 
                 </tbody>
+                <tfoot>
+                	<td>total</td>
+                	<td class="get-total"></td>
+                </tfoot>
+                
 
             </table>
-            <button class="btn btn-primary" style="align-content: right">Continue</button>
+            <form action="{% url 'event:checkout' object.name %}" method="POST">
+            	{% csrf_token %}
+            	<input type="hidden" id="hall_id" name="hall_id" value="">
+            	<input type="hidden" id="event_name" name="event" value="{{ object.name }}">
+            	<input type="submit" value="Continue">
+            </form>
         </div>
+        
 
 
     </div>
@@ -76,6 +87,16 @@ $( document ).ready(function() {
         $(".show-layout").show();
      });
 
+     $(".hall").mouseenter(function(){
+
+    $(this).tooltip('show');
+
+
+	});
+
+	
+	
+	
      var selected_hall = [];
      var selected = $(".status")
 
@@ -84,17 +105,22 @@ $( document ).ready(function() {
         if($(this).hasClass('selected')){
 
             $(this).removeClass('selected');
+
             var index = selected_hall.indexOf($(this).attr('id'));
+
             if (index !== -1) selected_hall.splice(index, 1);
+
             var id = $(this).attr('id')
 
             $("table td").filter(function(){
             if ($(this).text() == id){
                 $(this).parents("tr").remove()
+            $("table").trigger('update');
+
+                
         }
 
         });
-
 
 
     }
@@ -107,58 +133,85 @@ $( document ).ready(function() {
         if (!available){
             selected_hall.push(hall_id);
 
-    }
+    	}
         get_price(hall_id, selected)
-
-
+        
 
     }
+
+    $("input:hidden[name=hall_id]").val(selected_hall);
+
 
  });
 
- $(".hall").mouseenter(function(){
-
-    $(this).tooltip("show");
-
-
-});
 
 
 
-});
+function get_total(){
+
+	var total = 0
+	
+	$(".hall-price").each(function(){
+		var value = parseInt($(this).text());
+		console.log(value);
+		if(!isNaN(value)){
+			total += value;	
+
+		}
+	});
+
+	return total
+}
+
+
 
 
 function get_price(id, element){
 
      $.ajax({
-        url:'ajax/get_price/',
+        url:'/ajax/get_price/',
         data: {'hall_id': id, 'event':'{{ object.name }}' },
         datatype: 'json',
         success : function(data){
 
-            element.append("<tr><td>" + data['hall_id'] + "</td><td>" + data['price'] +"</td></tr>")
+            element.prepend("<tr><td>" + data['hall_id'] + "</td><td class='hall-price'>" + data['price'] +"</td></tr>");  
+
+            $("table").trigger('update'); 
+
+           
+           
     }
+
 
     });
 
-};
 
-
-function add_html(arr, element){
-
-        element.empty();
-        var add_html = "";
-        for(var i=0;i< arr.length;i++){
-
-            add_html += "<tr><td>" + arr[i] + "</td>"
-
-            get_price(arr[i], element)
-    }
-    element.append(add_html);
 
 
 };
 
 
+$("table").on('update', function(){
+
+	var total = 0;
+
+	$("table tbody tr td[class='hall-price']").each(function(){
+
+		var value = parseFloat($(this).text());
+
+		if (!isNaN(value)){
+
+			total += value;
+		}
+
+		}); 
+
+		$(".get-total").text(total);
+		
+	});
+
+
+
+});
 
 {% endblock %}
