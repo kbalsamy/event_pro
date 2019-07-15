@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from braintree import Configuration, Environment
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -137,12 +138,5 @@ BRAINTREE_MERCHANT_ID = os.environ.get('merchant_id')
 BRAINTREE_PUBLIC_KEY = os.environ.get('public_key')
 BRAINTREE_PRIVATE_KEY = os.environ.get('private_key')
 
-from braintree import Configuration, Environment
 
-
-Configuration.configure(
-    Environment.Sandbox,
-    BRAINTREE_MERCHANT_ID,
-    BRAINTREE_PUBLIC_KEY,
-    BRAINTREE_PRIVATE_KEY
-    )
+Configuration.configure(Environment.Sandbox, BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY)

@@ -18,12 +18,12 @@ class Order(models.Model):
 
     def get_total_order_cost(self):
 
-        return sum(item.get_cost for item in self.items.all())
+        return sum(item.get_cost() for item in self.items.all())
 
 
 class OrderItems(models.Model):
 
-    order = models.ForeignKey(Order, related_name='itemds', on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     hall_id = models.CharField(max_length=10)
     event = models.CharField(max_length=20, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)

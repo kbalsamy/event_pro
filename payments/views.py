@@ -2,17 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 import braintree
 from orders.models import Order
 from django.conf import settings
-from braintree import Configuration, Environment
-
-
-gateway = braintree.BraintreeGateway(
-    braintree.Configuration(
-        braintree.Environment.Sandbox,
-        merchant_id=settings.BRAINTREE_MERCHANT_ID,
-        public_key=settings.BRAINTREE_PUBLIC_KEY,
-        private_key=settings.BRAINTREE_PRIVATE_KEY
-    )
-)
 
 
 def payment_process(request):
@@ -26,7 +15,7 @@ def payment_process(request):
 
         result = braintree.Transaction.sale({
             'amount': '{:.2f}'.format(order.get_total_order_cost()),
-            'payment_method_noncey': nonce,
+            'payment_method_nonce': nonce,
             'options': {'submit_for_settlement': True}
         })
 
@@ -44,7 +33,7 @@ def payment_process(request):
 
     else:
 
-        client_token = gateway.client_token.generate()
+        client_token = braintree.ClientToken.generate()
 
         return render(request, 'payments/process.html', {'order': order, 'client_token': client_token})
 

@@ -19,15 +19,15 @@
 	<input type="hidden" id= "nonce" name="payment_method_nonce" value="">
 	{% csrf_token %}
 
-	<input type="submit" name="Pay">
+	<input type="submit" name="Pay" value='Pay'>
 
 </form>
 
 
-<script src="https://js.braintreegateway.com/web/3.29.0/js/client.min.js"></script>
-<script src="https://js.braintreegateway.com/web/3.29.0/js/hostedfields.min.js"></script>
+{% endblock %}
 
-<script type="text/javascript">
+{% block js %}
+
 	
 	var form = document.querySelector("#payment");
 	var submit = document.querySelector("input[type='submit']");
@@ -72,10 +72,6 @@
 		}, false);
 	});
 });
-
-
-</script>
-
 
 
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+
+<h1><a href="#" onclick="window.print()">Print order</a></h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Order ID</th>
+      <th>Payment status</th>
+      <th>payment reference</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <th scope="row">1</th>
+      <td>{{ order.id }}</td>
+      <td>{{ order.paid }}</td>
+      <td> {{ order.braintree_id }}</td>
+    </tr>    
+  </tbody>
+</table>
+
+{% endblock %}
