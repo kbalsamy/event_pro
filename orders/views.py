@@ -26,11 +26,11 @@ def order_create(request):
 
                 OrderItems.objects.create(order=order, hall_id=item['hall_id'], event=item['event'], price=item['price'])
 
-                cart.clear()
+            cart.clear()
 
-                request.session['order_id'] = order.id
+            request.session['order_id'] = order.id
 
-                return redirect(reverse('payments:process'))
+            return redirect(reverse('payments:process'))
 
 
 @staff_member_required
